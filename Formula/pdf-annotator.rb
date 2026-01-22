@@ -1,23 +1,18 @@
 # Homebrew formula for PDF Annotator
 #
 # Installation:
-#   brew install --build-from-source ./homebrew/pdf-annotator.rb
-#
-# Or create a tap:
-#   1. Create repo: github.com/yourusername/homebrew-pdf-annotator
-#   2. Copy this file to Formula/pdf-annotator.rb
-#   3. brew tap yourusername/pdf-annotator
-#   4. brew install pdf-annotator
+#   brew tap jvanvinkenroye/pdf-annotator
+#   brew install pdf-annotator
 
 class PdfAnnotator < Formula
   include Language::Python::Virtualenv
 
   desc "PDF annotation tool with side-by-side view for notes"
-  homepage "https://github.com/yourusername/pdfAnnotater"
-  url "https://github.com/yourusername/pdfAnnotater/archive/refs/tags/v0.1.0.tar.gz"
+  homepage "https://github.com/jvanvinkenroye/pdfAnnotater"
+  url "https://github.com/jvanvinkenroye/pdfAnnotater/archive/refs/tags/v0.1.0.tar.gz"
   sha256 "REPLACE_WITH_RELEASE_SHA256"
   license "MIT"
-  head "https://github.com/yourusername/pdfAnnotater.git", branch: "main"
+  head "https://github.com/jvanvinkenroye/pdfAnnotater.git", branch: "main"
 
   depends_on "python@3.12"
 

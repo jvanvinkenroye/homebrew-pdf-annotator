@@ -1,11 +1,11 @@
 # Homebrew PDF Annotator
 
-Homebrew tap for [PDF Annotator](https://github.com/yourusername/pdfAnnotater).
+Homebrew tap for [PDF Annotator](https://github.com/jvanvinkenroye/pdfAnnotater).
 
 ## Installation
 
 ```bash
-brew tap yourusername/pdf-annotator
+brew tap jvanvinkenroye/pdf-annotator
 brew install pdf-annotator
 ```
 
@@ -21,5 +21,5 @@ Data is stored in `~/Library/Application Support/PDF-Annotator/`.
 
 ```bash
 brew uninstall pdf-annotator
-brew untap yourusername/pdf-annotator
+brew untap jvanvinkenroye/pdf-annotator
 ```
