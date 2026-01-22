@@ -9,8 +9,8 @@ class PdfAnnotator < Formula
 
   desc "PDF annotation tool with side-by-side view for notes"
   homepage "https://github.com/jvanvinkenroye/pdfAnnotater"
-  url "https://github.com/jvanvinkenroye/pdfAnnotater/archive/refs/tags/v0.1.2.tar.gz"
-  sha256 "62c5adb48c1bfaaaf9a6c8b8a28d68b53565526abdb4aaf875b1796fcfb8db43"
+  url "https://github.com/jvanvinkenroye/pdfAnnotater/archive/refs/tags/v0.2.0.tar.gz"
+  sha256 "debbfb00a81b51d245f5c6e1e7a05221d47208084cede12852155483b66f9e58"
   license "MIT"
   head "https://github.com/jvanvinkenroye/pdfAnnotater.git", branch: "main"
 
