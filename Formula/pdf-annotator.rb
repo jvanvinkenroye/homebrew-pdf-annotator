@@ -51,9 +51,19 @@ class PdfAnnotator < Formula
     sha256 "b4ce2265a7abece45e7cc896e98dbebe6cead56bcf805a3d23136d145f5445bf"
   end
 
-  resource "PyMuPDF" do
-    url "https://files.pythonhosted.org/packages/48/d6/09b28f027b510838559f7748807192149c419b30cb90e6d5f0cf916dc9dc/pymupdf-1.26.7.tar.gz"
-    sha256 "71add8bdc8eb1aaa207c69a13400693f06ad9b927bea976f5d5ab9df0bb489c3"
+  # PyMuPDF requires pre-built wheels (building from source needs swig/libclang)
+  on_arm do
+    resource "PyMuPDF" do
+      url "https://files.pythonhosted.org/packages/72/74/448b6172927c829c6a3fba80078d7b0a016ebbe2c9ee528821f5ea21677a/pymupdf-1.26.7-cp310-abi3-macosx_11_0_arm64.whl"
+      sha256 "31aa9c8377ea1eea02934b92f4dcf79fb2abba0bf41f8a46d64c3e31546a3c02"
+    end
+  end
+
+  on_intel do
+    resource "PyMuPDF" do
+      url "https://files.pythonhosted.org/packages/94/35/cd74cea1787b2247702ef8522186bdef32e9cb30a099e6bb864627ef6045/pymupdf-1.26.7-cp310-abi3-macosx_10_9_x86_64.whl"
+      sha256 "07085718dfdae5ab83b05eb5eb397f863bcc538fe05135318a01ea353e7a1353"
+    end
   end
 
   resource "pillow" do
