@@ -51,21 +51,6 @@ class PdfAnnotator < Formula
     sha256 "b4ce2265a7abece45e7cc896e98dbebe6cead56bcf805a3d23136d145f5445bf"
   end
 
-  # PyMuPDF requires pre-built wheels (building from source needs swig/libclang)
-  on_arm do
-    resource "PyMuPDF" do
-      url "https://files.pythonhosted.org/packages/72/74/448b6172927c829c6a3fba80078d7b0a016ebbe2c9ee528821f5ea21677a/pymupdf-1.26.7-cp310-abi3-macosx_11_0_arm64.whl"
-      sha256 "31aa9c8377ea1eea02934b92f4dcf79fb2abba0bf41f8a46d64c3e31546a3c02"
-    end
-  end
-
-  on_intel do
-    resource "PyMuPDF" do
-      url "https://files.pythonhosted.org/packages/94/35/cd74cea1787b2247702ef8522186bdef32e9cb30a099e6bb864627ef6045/pymupdf-1.26.7-cp310-abi3-macosx_10_9_x86_64.whl"
-      sha256 "07085718dfdae5ab83b05eb5eb397f863bcc538fe05135318a01ea353e7a1353"
-    end
-  end
-
   resource "pillow" do
     url "https://files.pythonhosted.org/packages/d0/02/d52c733a2452ef1ffcc123b68e6606d07276b0e358db70eabad7e40042b7/pillow-12.1.0.tar.gz"
     sha256 "5c5ae0a06e9ea030ab786b0251b32c7e4ce10e58d983c0d5c56029455180b5b9"
@@ -82,7 +67,18 @@ class PdfAnnotator < Formula
   end
 
   def install
-    virtualenv_install_with_resources
+    # Create virtualenv
+    venv = virtualenv_create(libexec, "python3.12")
+
+    # Install PyMuPDF from wheel (requires binary, can't build from source)
+    system libexec/"bin/pip", "install", "--no-deps", "pymupdf==1.26.7"
+
+    # Install other resources from source
+    venv.pip_install resources
+
+    # Install the main package
+    venv.pip_install_and_link buildpath
+
     bin.install_symlink libexec/"bin/pdf-annotator"
   end
 
