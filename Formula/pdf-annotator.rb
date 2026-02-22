@@ -51,14 +51,15 @@ class PdfAnnotator < Formula
     sha256 "b4ce2265a7abece45e7cc896e98dbebe6cead56bcf805a3d23136d145f5445bf"
   end
 
+  # PyMuPDF and Pillow use pre-built wheels (C extensions, complex build deps)
   resource "PyMuPDF" do
-    url "https://files.pythonhosted.org/packages/48/d6/09b28f027b510838559f7748807192149c419b30cb90e6d5f0cf916dc9dc/pymupdf-1.26.7.tar.gz"
-    sha256 "71add8bdc8eb1aaa207c69a13400693f06ad9b927bea976f5d5ab9df0bb489c3"
+    url "https://files.pythonhosted.org/packages/72/74/448b6172927c829c6a3fba80078d7b0a016ebbe2c9ee528821f5ea21677a/pymupdf-1.26.7-cp310-abi3-macosx_11_0_arm64.whl"
+    sha256 "31aa9c8377ea1eea02934b92f4dcf79fb2abba0bf41f8a46d64c3e31546a3c02"
   end
 
   resource "pillow" do
-    url "https://files.pythonhosted.org/packages/d0/02/d52c733a2452ef1ffcc123b68e6606d07276b0e358db70eabad7e40042b7/pillow-12.1.0.tar.gz"
-    sha256 "5c5ae0a06e9ea030ab786b0251b32c7e4ce10e58d983c0d5c56029455180b5b9"
+    url "https://files.pythonhosted.org/packages/ab/c1/10e45ac9cc79419cedf5121b42dcca5a50ad2b601fa080f58c22fb27626e/pillow-12.1.0-cp312-cp312-macosx_11_0_arm64.whl"
+    sha256 "907bfa8a9cb790748a9aa4513e37c88c59660da3bcfffbd24a7d9e6abf224551"
   end
 
   resource "flaskwebgui" do
@@ -118,8 +119,31 @@ class PdfAnnotator < Formula
     sha256 "0cea48d173cc12fa28ecabc3b837ea3cf6f38c6d1136f85cbaaf598984861466"
   end
 
+  # Packages with C extensions (PyMuPDF, pillow) use pre-built wheels
+  WHEEL_RESOURCES = %w[PyMuPDF pillow].freeze
+
   def install
-    virtualenv_install_with_resources
+    venv = virtualenv_create(libexec, "python3.12")
+    python = libexec/"bin/python"
+
+    # Install source-based resources with standard pip (--no-binary)
+    resources.reject { |r| WHEEL_RESOURCES.include?(r.name) }.each do |r|
+      venv.pip_install r
+    end
+
+    # Install wheel-based resources directly
+    WHEEL_RESOURCES.each do |name|
+      resource(name).stage do
+        whl = Dir["*.whl"].first
+        if whl
+          system python, "-m", "pip", "install", "--no-deps",
+                 "--ignore-installed", "--no-compile", whl
+        end
+      end
+    end
+
+    # Install the application itself
+    venv.pip_install_and_link buildpath
     bin.install_symlink libexec/"bin/pdf-annotator"
   end
 
