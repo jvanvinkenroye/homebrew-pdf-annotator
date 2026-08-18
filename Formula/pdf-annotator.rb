@@ -1,8 +1,8 @@
 # Homebrew formula for PDF Annotator
 #
-# Installation:
-#   brew tap jvanvinkenroye/pdf-annotator
-#   brew install pdf-annotator
+# DEPRECATED: this formula is no longer maintained and is stuck at v0.4.1.
+# Install the current version via uv instead:
+#   uv tool install git+https://github.com/jvanvinkenroye/pdfAnnotater.git
 
 class PdfAnnotator < Formula
   include Language::Python::Virtualenv
@@ -13,6 +13,8 @@ class PdfAnnotator < Formula
   sha256 "cbc3e29749d7e99c8b2463f592c8e1b3eb924700a1b3886155cae48bf8cec5e1"
   license "MIT"
   head "https://github.com/jvanvinkenroye/pdfAnnotater.git", branch: "main"
+
+  deprecate! date: "2026-08-19", because: "is stuck at v0.4.1 — install the current version via uv tool instead"
 
   depends_on "python@3.12"
 
